@@ -1,69 +1,75 @@
 services:
+  # MongoDB database service
   mongodb:
-    container_name: rockshaver-db
-    image: mongo:5.0
+    container_name: rockshaver-db # The name of the MongoDB container
+    image: mongo:5.0 # Uses the MongoDB 5.0 image
     networks:
-      - skynet
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=cypress
-      - MONGO_INITDB_ROOT_PASSWORD=skills
-    restart: unless-stopped
+      - skynet # Connects this service to the 'skynet' network
+    environment: # Environment variables for MongoDB initialization
+      - MONGO_INITDB_ROOT_USERNAME=cypress # MongoDB root username
+      - MONGO_INITDB_ROOT_PASSWORD=skills # MongoDB root password
+    restart: unless-stopped # Automatically restarts the container unless stopped manually
     ports:
-      - "27017:27017"
+      - "27017:27017" # Maps port 27017 on the host to port 27017 in the container
 
+  # Mongo Express service (web-based interface for MongoDB)
   mongoxp:
-    container_name: mongo-express
-    image: mongo-express
+    container_name: mongo-express # The name of the Mongo Express container
+    image: mongo-express # Uses the mongo-express image
     networks:
-      - skynet
-    environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=cypress
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=skills
-      - ME_CONFIG_MONGODB_URL=mongodb://cypress:skills@mongodb:27017/?authSource=admin
-      - ME_CONFIG_BASICAUTH_USERNAME=cypress
-      - ME_CONFIG_BASICAUTH_PASSWORD=skills
+      - skynet # Connects this service to the 'skynet' network
+    environment: # Environment variables for Mongo Express
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=cypress # MongoDB admin username for connection
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=skills # MongoDB admin password for connection
+      - ME_CONFIG_MONGODB_URL=mongodb://cypress:skills@mongodb:27017/?authSource=admin # Connection string for MongoDB
+      - ME_CONFIG_BASICAUTH_USERNAME=cypress # Username for basic authentication
+      - ME_CONFIG_BASICAUTH_PASSWORD=skills # Password for basic authentication
     links:
-      - mongodb
-    restart: unless-stopped
+      - mongodb # Links the Mongo Express container to the MongoDB container
+    restart: unless-stopped # Automatically restarts the container unless stopped manually
     ports:
-      - "17017:8081"
+      - "17017:8081" # Maps port 17017 on the host to port 8081 in the container
 
+  # Backend API service
   rockshaver-api:
-    container_name: rockshaver-api
-    image: papitodev/rockshaver-api:enduro
+    container_name: rockshaver-api # The name of the backend API container
+    image: papitodev/rockshaver-api:enduro # Uses the custom API image
     networks:
-      - skynet
+      - skynet # Connects this service to the 'skynet' network
     depends_on:
-      - mongodb
-    environment:
-      - MONGO_URI=mongodb://mongodb:27017/rockshaver
+      - mongodb # Ensures MongoDB starts before this service
+    environment: # Environment variables for the API
+      - MONGO_URI=mongodb://mongodb:27017/rockshaver # Connection string for MongoDB
     ports:
-      - "3333:3333"
-    restart: unless-stopped
-    command: /bin/sh -c "npm run go"
+      - "3333:3333" # Maps port 3333 on the host to port 3333 in the container
+    restart: unless-stopped # Automatically restarts the container unless stopped manually
+    command: /bin/sh -c "npm run go" # Command to run when the container starts
 
+  # Frontend web application service
   rockshaver-web:
-    container_name: rockshaver-web
-    image: papitodev/rockshaver-web:enduro
+    container_name: rockshaver-web # The name of the frontend web app container
+    image: papitodev/rockshaver-web:enduro # Uses the custom web app image
     networks:
-      - skynet
+      - skynet # Connects this service to the 'skynet' network
     depends_on:
-      - rockshaver-api
+      - rockshaver-api # Ensures the API starts before this service
     ports:
-      - "3000:3000"
-    restart: unless-stopped
+      - "3000:3000" # Maps port 3000 on the host to port 3000 in the container
+    restart: unless-stopped # Automatically restarts the container unless stopped manually
 
+  # Mobile application service
   rockshaver-mob:
-    container_name: rockshaver-mob
-    image: papitodev/rockshaver-mob:enduro
+    container_name: rockshaver-mob # The name of the mobile app container
+    image: papitodev/rockshaver-mob:enduro # Uses the custom mobile app image
     networks:
-      - skynet
+      - skynet # Connects this service to the 'skynet' network
     depends_on:
-      - rockshaver-api
+      - rockshaver-api # Ensures the API starts before this service
     ports:
-      - "8100:8100"
-    restart: unless-stopped
+      - "8100:8100" # Maps port 8100 on the host to port 8100 in the container
+    restart: unless-stopped # Automatically restarts the container unless stopped manually
 
+# Network configuration
 networks:
   skynet:
-    driver: bridge
+    driver: bridge # Uses the bridge network driver

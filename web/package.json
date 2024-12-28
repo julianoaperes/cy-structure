@@ -1,8 +1,12 @@
 {
   "name": "web",
+  "_comments_name": "This is the name of the project/package. It typically represents the application or test suite.",
   "packageManager": "yarn@4.5.3",
+  "_comments_packageManager": "Specifies the package manager and its version. Yarn 4.5.3 is used in this project.",
   "devDependencies": {
     "cypress": "13.15.2",
-    "cypress-xpath": "^2.0.1"
+    "_comments_cypress": "Cypress is the end-to-end testing framework used to test this web applications. The version is 13.15.2",
+    "cypress-xpath": "^2.0.1",
+    "_comments_cypress-xpath": "This plugin adds support for XPath selectors in Cypress tests. '^2.0.1' allows updates to compatible higher versions."
   }
 }
