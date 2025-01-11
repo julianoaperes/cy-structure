@@ -1,12 +1,24 @@
 {
   "name": "web",
-  "_comments_name": "This is the name of the project/package. It typically represents the application or test suite.",
+  "type": "module",
   "packageManager": "yarn@4.5.3",
-  "_comments_packageManager": "Specifies the package manager and its version. Yarn 4.5.3 is used in this project.",
+  "scripts": {
+    "lint": "eslint cypress/**/*.js",
+    "format": "prettier --write \"**/*.{js,json,css,html,md}\"",
+    "number-tests": "node scripts/addTestCounters.js",
+    "test:local": "cross-env NODE_ENV=development mocha",
+    "test:report": "MOCHA_FILE=./test-results.xml mocha --reporter mocha-junit-reporter",
+    "mocha-test": "MOCHA_FILE=./cypress/cy_reports/test-output.xml mocha --reporter mocha-junit-reporter ./cypress/e2e/ts01Login.cy.js"
+  },
   "devDependencies": {
-    "cypress": "13.15.2",
-    "_comments_cypress": "Cypress is the end-to-end testing framework used to test this web applications. The version is 13.15.2",
+    "@eslint/js": "^9.17.0",
+    "cross-env": "^7.0.3",
+    "cypress": "^13.17.0",
     "cypress-xpath": "^2.0.1",
-    "_comments_cypress-xpath": "This plugin adds support for XPath selectors in Cypress tests. '^2.0.1' allows updates to compatible higher versions."
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0",
+    "mocha": "11.0.1",
+    "mocha-junit-reporter": "^2.2.1",
+    "ms": "^2.1.3"
   }
 }
