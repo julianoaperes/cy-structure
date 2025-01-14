@@ -1,4 +1,7 @@
-import { customDescribeNumbered } from '../support/commands.mjs';
+import { customDescribeNumbered } from '../support/commands.mjs'; // Importing the customDescribeNumbered function from the commands file in the support folder 
+import loginPage from '../support/pages/login.page'; // Importing the loginPage object from the login.page file in the support folder 
+// ! *******************************************************
+// ! ********************* Test Suit ***********************
 customDescribeNumbered('Login', (it) => {
   beforeEach(() => {
     cy.visit('/'); // Given the user accesses this link
